@@ -1,0 +1,26 @@
+import requests
+import random
+import time
+from datetime import datetime
+
+# Paste your Power BI push URL below
+PUSH_URL = "https://api.powerbi.com/beta/ce84b0ca-61a1-4de1-aafd-4b5e1deb86e0/datasets/4c37e572-4a37-4249-8d85-580496a76309/rows?experience=power-bi&key=WRLEC1RsDkAo8fcNl6SGyMDfeZ7UIoMCqO%2FyRewEcH9YYHWYGG9B9hv1Dv7yCOFQ%2BcsIe1g3LcOBk%2B4HsYVfQA%3D%3D"
+
+devices = ["Machine-1", "Machine-2", "Machine-3"]
+
+while True:
+    data = [{
+        "timestamp": datetime.utcnow().isoformat(),
+        "temperature": round(random.uniform(20, 40), 2),
+        "humidity": round(random.uniform(30, 90), 2),
+        "pressure": round(random.uniform(900, 1100), 2),
+        "device_id": random.choice(devices)
+    }]
+
+    try:
+        r = requests.post(PUSH_URL, json=data)
+        print("Sent:", data, "Status:", r.status_code)
+    except Exception as e:
+        print("Error:", e)
+
+    time.sleep(2)
